@@ -6,23 +6,14 @@ auto boostio = []() {
 }();
 
 class Solution {
-private:
-    const int N_ALPH = 26;
-    
-    int keyof(const char c) {
-        return (int)(c - 'a');
-    }
-    
 public:
     bool isSubstringPresent(string s) {
-        vector<vector<bool>> seen(N_ALPH, vector<bool>(N_ALPH, false));
+        unordered_map<char, unordered_map<char, bool>> seen;
         for (int i = 1; i < s.length(); i++) {
-            const int l = keyof(s[i-1]);
-            const int r = keyof(s[i]);
-            if (l == r || seen[r][l]) {
+            if (s[i-1] == s[i] || seen[s[i]][s[i-1]]) {
                 return true;
             }
-            seen[l][r] = true;
+            seen[s[i-1]][s[i]] = true;
         }
         return false;
     }
