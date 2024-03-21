@@ -22,20 +22,11 @@ public:
             prefix_sum[v] += v;
             prefix_count[v]++;
         }
-        // if (k == 0) {
-        //     return word.length() - max_count * (prefix_count[max_count] - prefix_count[max_count-1]);
-        // }
-        // if (max_count - min_count <= k) {
-        //     return 0;
-        // }
-        // cout << "---\n";
         for (int i = min_count; i <= max_count; i++) {
             prefix_sum[i] += prefix_sum[i-1];
             prefix_count[i] += prefix_count[i-1];
-            // cout << i << ": " << prefix_sum[i] << ", " << prefix_count[i] << endl;
         }
         int ans = INT_MAX;
-        // cout << "---\n";
         for (int l = min_count, r = min_count + k; r <= max_count; l++, r++) {
             const int r_count = prefix_count.back() - prefix_count[r];
             const int r_sum = prefix_sum.back() - prefix_sum[r];
@@ -43,17 +34,7 @@ public:
             const int l_delete = prefix_sum[l-1];
             const int total_delete = l_delete + r_delete;
             ans = min(ans, total_delete);
-            // cout << r << ": " << r_count << " " << r_delete << " " << total_delete << endl;
         }
         return ans == INT_MAX ? 0 : ans;
     }
 };
-
-// 1 2 4 => 3
-
-
-// 1 2 3 5 5 6
-// [0, 1, 2, 3, 3, 5,  6]
-// [0, 1, 3, 6, 6, 16, 22]
-// 22 - 6 = 18
-// 9 - 
