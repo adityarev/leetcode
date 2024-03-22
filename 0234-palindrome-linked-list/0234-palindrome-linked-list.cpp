@@ -8,6 +8,13 @@
  *     ListNode(int x, ListNode *next) : val(x), next(next) {}
  * };
  */
+auto boostio = []() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+    return 0;
+}();
+
 class Solution {
 private:
     bool helper(ListNode** cross, ListNode* curr) {
