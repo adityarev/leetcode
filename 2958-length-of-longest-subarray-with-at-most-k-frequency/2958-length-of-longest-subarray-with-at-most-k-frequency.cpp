@@ -12,16 +12,13 @@ public:
         int ans = 0;
         unordered_map<int,int> counter;
         for (int l = 0, r = -1; r < len; ) {
-            while (++r < len) {
-                if (++counter[nums[r]] > k) {
-                    break;
-                }
-            }
+            while (++r < len && ++counter[nums[r]] <= k);
             ans = max(ans, r - l);
-            if (r < len) {
-                while (l <= r && counter[nums[r]] > k) {
-                    counter[nums[l++]]--;
-                }
+            if (r == len) {
+                break;
+            }
+            while (l <= r && counter[nums[r]] > k) {
+                counter[nums[l++]]--;
             }
         }
         return ans;
