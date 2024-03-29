@@ -6,29 +6,43 @@ auto boostio = []() {
 }();
 
 class Solution {
+private:
+    const int N = 26;
+    vector<vector<int>> letter_max_lens;
+    
+    int keyof(const char letter) {
+        return (int)(letter - 'a');
+    }
+
+    void insert_len(const char& letter, const int& len) {
+        const int key = keyof(letter);
+        letter_max_lens[key].push_back(len);
+        sort(letter_max_lens[key].begin(), letter_max_lens[key].end(), greater<int>());
+        letter_max_lens[key].pop_back();
+    }
+    
+    int get_longest_thrice(const char& letter) {
+        const int key = keyof(letter);
+        return max(0,
+                   max(letter_max_lens[key][0] - 2,
+                       max(letter_max_lens[key][1] == letter_max_lens[key][0] ? letter_max_lens[key][1] - 1 : letter_max_lens[key][1],
+                           letter_max_lens[key][2])));
+    }
+
 public:
     int maximumLength(string s) {
-        const int len = s.length();
-        for (int ans = len - 2; ans > 0; ans--) {
-            unordered_map<string,int> counter;
-            unordered_map<char,int> freq;
-            string str = "";
-            for (int i = 0; i < ans - 1; i++) {
-                str += s[i];
-                freq[s[i]]++;
-            }
-            for (int l = 0, r = ans - 1; r < len; l++, r++) {
-                str += s[r];
-                freq[s[r]]++;
-                if (++counter[str] == 3 && freq.size() == 1) {
-                    return ans;
-                }
-                str = str.substr(1);
-                if (--freq[s[l]] == 0) {
-                    freq.erase(s[l]);
-                }
-            }
+        letter_max_lens = vector<vector<int>>(N, vector<int>(3, 0));
+        for (int l = 0, r = 0; r < s.length(); ) {
+            while (++r < s.length() && s[r] == s[l]);
+            const int len = r - l;
+            insert_len(s[l], len);
+            l = r;
         }
-        return -1;
+        int ans = 0;
+        for (char letter = 'a'; letter <= 'z'; letter++) {
+            const int letter_longest_thrice = get_longest_thrice(letter);
+            ans = max(ans, letter_longest_thrice);
+        }
+        return ans == 0 ? -1 : ans;
     }
 };
