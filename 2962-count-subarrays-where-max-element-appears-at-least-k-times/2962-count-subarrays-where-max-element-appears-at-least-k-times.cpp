@@ -8,10 +8,7 @@ auto boostio = []() {
 class Solution {
 public:
     long long countSubarrays(vector<int>& nums, int k) {
-        int max_num = 0;
-        for (const int& num: nums) {
-            max_num = max(max_num, num);
-        }
+        int max_num = *max_element(nums.begin(), nums.end());
         vector<int> indices;
         for (int index = 0; index < nums.size(); index++) {
             if (nums[index] == max_num) {
@@ -27,4 +24,3 @@ public:
         return ans;
     }
 };
-// 2 * 2 + 4 * 2
