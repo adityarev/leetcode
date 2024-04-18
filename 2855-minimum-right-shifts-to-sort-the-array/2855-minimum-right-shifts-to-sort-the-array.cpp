@@ -13,7 +13,8 @@ public:
             pq.push(nums[i]);
         }
         for (int i = 0; i < len; i++) {
-            if (nums[(i + min_index) % len] != pq.top()) {
+            const int ii = (i + min_index) % len;
+            if (nums[ii] != pq.top()) {
                 return -1;
             }
             pq.pop();
